@@ -594,6 +594,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2057884257}
   - component: {fileID: 2057884259}
+  - component: {fileID: 2057884258}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -615,6 +616,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2057884258
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2057884256}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7940db86910e5474097a8a8e6316d504, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetCamera: {fileID: 519420031}
 --- !u!114 &2057884259
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -628,9 +642,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   distance: 100
-  differenceDistance: 5
+  differenceDistance: 2
   time: 20
-  differenceTime: 1
-  pointCount: 5
+  differenceTime: 0.5
+  pointCount: 8
   material: {fileID: 2100000, guid: 9d929cb67cdc03240a242f99fc82fa60, type: 2}
+  heroCount: 4
   heroPrefab: {fileID: 1404351834284923972, guid: a0ca027b67791d84b90b697671486753, type: 3}

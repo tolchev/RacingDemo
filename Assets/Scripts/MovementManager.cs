@@ -4,6 +4,7 @@ using UnityEngine;
 public class MovementManager : MonoBehaviour
 {
     private readonly Movement movement;
+    private Animator animator;
     private MovementData[] datas;
     private Material material;
     private Vector3 startPosition;
@@ -24,7 +25,13 @@ public class MovementManager : MonoBehaviour
 
     public IEnumerator Running()
     {
+        animator.SetBool("Run", true);
         return movement.Running(datas);
+    }
+
+    private void Start()
+    {
+        animator = GetComponent<Animator>();
     }
 
     private void OnEnable()
