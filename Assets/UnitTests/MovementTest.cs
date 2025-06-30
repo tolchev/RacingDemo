@@ -1,5 +1,6 @@
 using NUnit.Framework;
 using System.Collections;
+using UnityEngine;
 using UnityEngine.TestTools;
 
 public class MovementTest
@@ -14,56 +15,78 @@ public class MovementTest
         prevDistance = -1;
 
         movement.DistanceChanged += CheckDistanceChanged;
+
+        Time.timeScale = 10;
     }
 
     [TearDown]
     public void TearDown()
     {
+        Time.timeScale = 1;
         movement.DistanceChanged -= CheckDistanceChanged;
     }
 
     [UnityTest]
-    public IEnumerator GameManager_Running_OneSubPath()
+    public IEnumerator Movement_Running_OneSubPath()
     {
-        var subDistances = new float[] { 0, 15 };
-        var subTimes = new float[] { 0, 5 };
+        MovementData[] datas = new MovementData[]
+        {
+            new MovementData(0, 0),
+            new MovementData(15, 5)
+        };
 
-        yield return movement.Running(subDistances, subTimes);
+        yield return movement.Running(datas);
 
         Assert.AreEqual(15, prevDistance, 1);
     }
 
     [UnityTest]
-    public IEnumerator GameManager_Running_TwoSubPath()
+    public IEnumerator Movement_Running_TwoSubPath()
     {
-        var subDistances = new float[] { 0, 15, 25 };
-        var subTimes = new float[] { 0, 5, 9 };
+        MovementData[] datas = new MovementData[]
+        {
+            new MovementData(0, 0),
+            new MovementData(15, 5),
+            new MovementData(25, 9)
+        };
 
-        yield return movement.Running(subDistances, subTimes);
+        yield return movement.Running(datas);
 
         Assert.AreEqual(25, prevDistance, 1);
     }
 
     [UnityTest]
-    public IEnumerator GameManager_Running_ThreeSubPath()
+    public IEnumerator Movement_Running_ThreeSubPath()
     {
-        var subDistances = new float[] { 0, 15, 25, 30 };
-        var subTimes = new float[] { 0, 5, 9, 10 };
+        MovementData[] datas = new MovementData[]
+        {
+            new MovementData(0, 0),
+            new MovementData(15, 5),
+            new MovementData(25, 9),
+            new MovementData(30, 10)
+        };
 
-        yield return movement.Running(subDistances, subTimes);
+        yield return movement.Running(datas);
 
         Assert.AreEqual(30, prevDistance, 1);
     }
 
     [UnityTest]
-    public IEnumerator GameManager_Running_FiveSubPath()
+    public IEnumerator Movement_Running_FiveSubPath()
     {
-        var subDistances = new float[] { 0, 19.88f, 39.44f, 59.72f, 80.96f, 100 };
-        var subTimes = new float[] { 0, 4.09f, 8.37f, 11.14f, 16.4f, 20 };
+        MovementData[] datas = new MovementData[]
+        {
+            new MovementData(0, 0),
+            new MovementData(19.88f, 4.09f),
+            new MovementData(39.44f, 8.37f),
+            new MovementData(59.72f, 11.14f),
+            new MovementData(80.96f, 16.4f),
+            new MovementData(100, 20)
+        };
 
-        yield return movement.Running(subDistances, subTimes);
+        yield return movement.Running(datas);
 
-        Assert.AreEqual(30, prevDistance, 1);
+        Assert.AreEqual(100, prevDistance, 1);
     }
 
     private void CheckDistanceChanged(object sender, MovementParametersArgs args)

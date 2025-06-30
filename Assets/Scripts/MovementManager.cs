@@ -1,30 +1,63 @@
-using System;
 using System.Collections;
 using UnityEngine;
 
 public class MovementManager : MonoBehaviour
 {
-    private Movement movement;
+    private readonly Movement movement;
+    private MovementData[] datas;
+    private Material material;
+    private Vector3 startPosition;
 
     public MovementManager()
     {
         movement = new Movement(MovementTimer.Instance);
     }
 
-    public event EventHandler<MovementParametersArgs> DistanceChanged
+    public void Init(MovementData[] datas, Material material, float y)
     {
-        add
+        this.datas = datas;
+        this.material = material;
+        startPosition = new Vector3(startPosition.x, startPosition.y + y, startPosition.z);
+        transform.position = startPosition;
+        ShowPath();
+    }
+
+    public IEnumerator Running()
+    {
+        return movement.Running(datas);
+    }
+
+    private void OnEnable()
+    {
+        movement.DistanceChanged += MovementDistanceChanged;
+    }
+
+    private void OnDisable()
+    {
+        movement.DistanceChanged -= MovementDistanceChanged;
+    }
+
+    private void ShowPath()
+    {
+        for (int i = 0; i < datas.Length - 1; i++)
         {
-            movement.DistanceChanged += value;
-        }
-        remove
-        {
-            movement.DistanceChanged -= value;
+            var go = new GameObject("subLine" + i);
+            var lineRenderer = go.AddComponent<LineRenderer>();
+            lineRenderer.positionCount = 2;
+            lineRenderer.startWidth = 0.3f;
+            lineRenderer.endWidth = 0.3f;
+            var color = Random.ColorHSV();
+            lineRenderer.material = material;
+            lineRenderer.startColor = color;
+            lineRenderer.endColor = color;
+
+            lineRenderer.SetPosition(0, new Vector3(datas[i].Distance, -0.7f + startPosition.y, 0));
+            lineRenderer.SetPosition(1, new Vector3(datas[i + 1].Distance, -0.7f + startPosition.y, 0));
         }
     }
 
-    public IEnumerator Running(float[] subDistances, float[] subTimes)
+    private void MovementDistanceChanged(object sender, MovementParametersArgs args)
     {
-        return movement.Running(subDistances, subTimes);
+        transform.position = new Vector3(args.Distance, startPosition.y, startPosition.z);
     }
 }

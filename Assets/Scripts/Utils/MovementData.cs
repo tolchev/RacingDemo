@@ -1,8 +1,6 @@
-using System;
-
-public class MovementParametersArgs : EventArgs
+public class MovementData
 {
-    public MovementParametersArgs(float distance, float time)
+    public MovementData(float distance, float time)
     {
         Distance = distance;
         Time = time;
