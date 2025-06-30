@@ -26,12 +26,25 @@ public class MovementManager : MonoBehaviour
     public IEnumerator Running()
     {
         animator.SetBool("Run", true);
-        return movement.Running(datas);
+        
+        yield return null;
+        
+        PlayAnimationFromRandomFrame("MOVE_Snail");
+        
+        yield return movement.Running(datas);
     }
 
-    private void Start()
+    private void Awake()
     {
         animator = GetComponent<Animator>();
+        PlayAnimationFromRandomFrame("IDLE_Snail");
+    }
+
+    private void PlayAnimationFromRandomFrame(string stateName)
+    {
+        float randomTime = Random.Range(0f, 1f);
+        
+        animator.Play(stateName, 0, randomTime);
     }
 
     private void OnEnable()
